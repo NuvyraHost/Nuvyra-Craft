@@ -1,7 +1,7 @@
 {
   "name": "nuvyra-craft",
-  "version": "1.0.3",
-  "description": "Nuvyra-Craft — Automated Minecraft Paper Server Manager",
+  "version": "1.1.0",
+  "description": "Nuvyra-Craft \u2014 Multi-software Minecraft server manager for Windows and Android",
   "main": "main.js",
   "scripts": {
     "start": "electron .",

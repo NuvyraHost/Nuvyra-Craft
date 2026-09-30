@@ -298,6 +298,14 @@ const initApp = async () => {
     // ══════════════════════════════════════════════════════════
     //  CREATE SCREEN
     // ══════════════════════════════════════════════════════════
+    const serverTypeEl = $('#sel-server-type');
+    async function loadServerVersionsForType() {
+        const type = serverTypeEl ? serverTypeEl.value : 'paper';
+        const versions = window.api.fetchServerVersions ? await window.api.fetchServerVersions(type) : await window.api.fetchPaperVersions();
+        const sel = $('#sel-version'); if (sel) { sel.innerHTML=''; versions.forEach(v => { const o=document.createElement('option'); o.value=v; o.textContent=`${type === 'velocity' ? 'Velocity' : type[0].toUpperCase()+type.slice(1)} ${v}`; sel.appendChild(o); }); sel.disabled=false; }
+    }
+    if (serverTypeEl) serverTypeEl.onchange = () => loadServerVersionsForType().catch(e => toast('Could not load versions: '+e.message, 'error'));
+
     $('#btn-pick-dir').onclick = async () => {
         const currentVal = $('#inp-dir').value.trim() || savedDir || '/storage/emulated/0/NuvyraCraft/server';
         const customPrompt = prompt('Enter or edit server install folder path:', currentVal);
@@ -429,7 +437,8 @@ const initApp = async () => {
                 name: name,
                 ram: ramVal,
                 cpu: cpuVal,
-                version: version
+                version: version,
+                serverType: serverTypeEl ? serverTypeEl.value : 'paper'
             });
 
             toast('Server created successfully in Phone Storage!');
@@ -521,6 +530,7 @@ const initApp = async () => {
         $('#btn-start').disabled = running;
         $('#btn-stop').disabled = !running;
         $('#btn-restart').disabled = !running;
+        if ($('#btn-kill')) $('#btn-kill').disabled = !running;
         $('#inp-cmd').disabled = !running;
         $('#btn-cmd').disabled = !running;
 
@@ -591,6 +601,10 @@ const initApp = async () => {
 
     $('#btn-start').onclick = startServer;
 
+    $('#btn-kill').onclick = async () => {
+        if (!confirm('Kill the server process immediately? Unsaved world data may be lost.')) return;
+        try { appendConsole('[Nuvyra-Craft] FORCE KILL requested.\n'); await window.api.serverKill(); } catch (e) { toast(e.message || 'Kill failed', 'error'); }
+    };
     $('#btn-stop').onclick = async () => {
         try {
             appendConsole('[Nuvyra-Craft] Stopping server...\n');

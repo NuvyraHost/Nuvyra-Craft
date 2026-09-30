@@ -27,6 +27,7 @@ public class ServerForegroundService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        if (intent != null && "NUVYRA_KILL".equals(intent.getAction())) { ServerProcessPlugin.killServerNow(); stopSelf(); return START_NOT_STICKY; }
         Intent notificationIntent = new Intent(this, MainActivity.class);
         notificationIntent.setAction(Intent.ACTION_MAIN);
         notificationIntent.addCategory(Intent.CATEGORY_LAUNCHER);
@@ -38,9 +39,12 @@ public class ServerForegroundService extends Service {
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? PendingIntent.FLAG_IMMUTABLE : 0
         );
 
+        Intent killIntent = new Intent(this, ServerForegroundService.class).setAction("NUVYRA_KILL");
+        PendingIntent killPendingIntent = PendingIntent.getService(this, 42, killIntent, Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? PendingIntent.FLAG_IMMUTABLE : 0);
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("Nuvyra-Craft Server")
-                .setContentText("Minecraft Paper Server is running in background")
+                .setContentText("Minecraft server is running in background")
+                .addAction(android.R.drawable.ic_delete, "Kill", killPendingIntent)
                 .setSmallIcon(android.R.drawable.ic_media_play)
                 .setContentIntent(pendingIntent)
                 .setOngoing(true)
@@ -109,9 +113,12 @@ public class ServerForegroundService extends Service {
                         notificationIntent,
                         Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? PendingIntent.FLAG_IMMUTABLE : 0
                 );
+                Intent killIntent = new Intent(ctx, ServerForegroundService.class).setAction("NUVYRA_KILL");
+                PendingIntent killPendingIntent = PendingIntent.getService(ctx, 42, killIntent, Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? PendingIntent.FLAG_IMMUTABLE : 0);
                 Notification notification = new NotificationCompat.Builder(ctx, CHANNEL_ID)
                         .setContentTitle("Nuvyra-Craft Server")
                         .setContentText(text)
+                        .addAction(android.R.drawable.ic_delete, "Kill", killPendingIntent)
                         .setSmallIcon(android.R.drawable.ic_media_play)
                         .setContentIntent(pendingIntent)
                         .setOngoing(true)

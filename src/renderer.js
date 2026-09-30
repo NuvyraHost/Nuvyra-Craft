@@ -197,12 +197,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             // Populate versions in create screen
             const sel = $('#sel-version');
             sel.innerHTML = '';
-            paperVersions.forEach(v => {
-                const opt = document.createElement('option');
-                opt.value = v; opt.textContent = v;
-                sel.appendChild(opt);
-            });
-            sel.disabled = false;
+            paperVersions.forEach(v => { const opt = document.createElement('option'); opt.value = v; opt.textContent = `Paper ${v}`; sel.appendChild(opt); }); sel.disabled = false;
 
             $('#inp-dir').value = savedDir;
             showScreen('screen-create');
@@ -212,6 +207,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     // ══════════════════════════════════════════════════════════
     //  CREATE SCREEN
     // ══════════════════════════════════════════════════════════
+    const serverTypeEl = $('#sel-server-type');
+    async function loadServerVersionsForType() {
+        const type = serverTypeEl ? serverTypeEl.value : 'paper';
+        const versions = window.api.fetchServerVersions ? await window.api.fetchServerVersions(type) : await window.api.fetchPaperVersions();
+        paperVersions = versions;
+        const sel = $('#sel-version');
+        if (sel) { sel.innerHTML = ''; versions.forEach(v => { const o = document.createElement('option'); o.value = v; o.textContent = `${type === 'velocity' ? 'Velocity' : type[0].toUpperCase()+type.slice(1)} ${v}`; sel.appendChild(o); }); sel.disabled = false; }
+        const label = $('#lbl-version-select'); if (label) label.textContent = type === 'velocity' ? 'Proxy Version' : `${type[0].toUpperCase()+type.slice(1)} Minecraft Version`;
+    }
+    if (serverTypeEl) serverTypeEl.onchange = () => loadServerVersionsForType().catch(e => toast('Could not load versions: '+e.message, 'error'));
+
     $('#btn-pick-dir').onclick = async () => {
         const dir = await window.api.pickDirectory();
         if (dir) {
@@ -268,7 +274,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 name: name,
                 ram: parseInt(sldRam.value),
                 cpu: parseInt(sldCpu.value),
-                version: version
+                version: version,
+                serverType: serverTypeEl ? serverTypeEl.value : 'paper'
             });
 
             toast('Server created successfully!');
@@ -342,6 +349,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         $('#btn-start').disabled = running;
         $('#btn-stop').disabled = !running;
         $('#btn-restart').disabled = !running;
+        if ($('#btn-kill')) $('#btn-kill').disabled = !running;
         $('#inp-cmd').disabled = !running;
         $('#btn-cmd').disabled = !running;
     });
@@ -359,6 +367,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     $('#btn-start').onclick = startServer;
 
+    $('#btn-kill').onclick = async () => {
+        if (!confirm('Kill the server process immediately? Unsaved world data may be lost.')) return;
+        try { appendConsole('[Nuvyra-Craft] FORCE KILL requested.\n'); await window.api.serverKill(); } catch (e) { toast(e.message || 'Kill failed', 'error'); }
+    };
     $('#btn-stop').onclick = async () => {
         try {
             appendConsole('[Nuvyra-Craft] Stopping server...\n');

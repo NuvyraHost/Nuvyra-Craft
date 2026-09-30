@@ -25,6 +25,7 @@ contextBridge.exposeInMainWorld('api', {
 
     // ── PaperMC ────────────────────────────────
     fetchPaperVersions: () => ipcRenderer.invoke('fetch-paper-versions'),
+    fetchServerVersions: (serverType) => ipcRenderer.invoke('fetch-server-versions', serverType),
 
     // ── Server CRUD ───────────────────────────
     createServer:  (opts) => ipcRenderer.invoke('create-server', opts),

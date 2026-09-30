@@ -1,7 +1,7 @@
 {
   "name": "nuvyra-craft-mobile",
-  "version": "1.0.0",
-  "description": "Nuvyra-Craft Mobile — Minecraft Server Manager for Android",
+  "version": "1.1.0",
+  "description": "Nuvyra-Craft Mobile \u2014 Multi-software Minecraft server manager for Android",
   "main": "index.js",
   "scripts": {
     "build": "npx cap sync android",

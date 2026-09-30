@@ -854,11 +854,89 @@ const PAPER_VERSIONS = {
     "1.7.10": "https://fill-data.papermc.io/v1/objects/33772078d92e9dbb027602da016524ef29af5b4c12eaddac1fe2465b01108185/paper-1.7.10-2025.jar"
 };
 
-ipcMain.handle('fetch-paper-versions', async () => {
-    // Return version names (newest first — already ordered in the catalog)
-    return Object.keys(PAPER_VERSIONS);
+const SERVER_TYPE_LABELS = {
+    paper: 'Paper', vanilla: 'Vanilla', fabric: 'Fabric', forge: 'Forge', spigot: 'Spigot', velocity: 'Velocity Proxy'
+};
+const SERVER_VERSION_CATALOG = {
+    paper: Object.keys(PAPER_VERSIONS),
+    vanilla: ['1.21.11','1.21.10','1.21.8','1.21.4','1.21.1','1.20.6','1.20.4','1.20.1','1.19.4','1.18.2'],
+    fabric: ['1.21.11','1.21.10','1.21.8','1.21.4','1.21.1','1.20.6','1.20.4','1.20.1','1.19.4','1.18.2'],
+    forge: ['1.21.1','1.20.1','1.19.4','1.18.2','1.16.5'],
+    spigot: ['1.21.1','1.20.6','1.20.1','1.19.4','1.18.2'],
+    velocity: ['3.4.0','3.3.0','3.2.0']
+};
+ipcMain.handle('fetch-server-versions', async (_, serverType = 'paper') => {
+    return SERVER_VERSION_CATALOG[serverType] || SERVER_VERSION_CATALOG.paper;
 });
+ipcMain.handle('fetch-paper-versions', async () => SERVER_VERSION_CATALOG.paper);
 
+async function downloadRemoteFile(url, destPath, progressEvent = 'download-progress') {
+    const writer = fsSync.createWriteStream(destPath);
+    try {
+        const resp = await axios({ url, method: 'GET', responseType: 'stream', timeout: 300000,
+            headers: { 'User-Agent': 'NuvyraCraft/1.1 (https://github.com/NuvyraHost/Nuvyra-Craft)' } });
+        const total = parseInt(resp.headers['content-length'] || '0', 10); let downloaded = 0;
+        resp.data.on('data', chunk => { downloaded += chunk.length; if (total > 0 && mainWindow) mainWindow.webContents.send(progressEvent, Math.round(downloaded / total * 100)); });
+        resp.data.pipe(writer);
+        await new Promise((res, rej) => { writer.on('finish', res); writer.on('error', rej); });
+    } catch (e) { try { writer.close(); } catch (_) {} ; throw e; }
+}
+async function resolveVanillaUrl(version) {
+    const manifest = (await axios.get('https://piston-meta.mojang.com/mc/game/version_manifest_v2.json', { timeout: 15000 })).data;
+    const entry = (manifest.versions || []).find(v => v.id === version);
+    if (!entry) throw new Error(`Vanilla Minecraft ${version} is not available.`);
+    const details = (await axios.get(entry.url, { timeout: 15000 })).data;
+    const url = details.downloads?.server?.url;
+    if (!url) throw new Error(`Mojang does not provide a Vanilla server download for ${version}.`);
+    return url;
+}
+async function resolveFabricUrl(version) {
+    const data = (await axios.get(`https://meta.fabricmc.net/v2/versions/loader/${encodeURIComponent(version)}`, { timeout: 15000 })).data;
+    const loader = data.find(x => x.loader?.stable) || data[0];
+    if (!loader?.loader?.version) throw new Error(`No stable Fabric loader found for ${version}.`);
+    return `https://meta.fabricmc.net/v2/versions/loader/${encodeURIComponent(version)}/${loader.loader.version}/1.0.3/server/jar`;
+}
+async function resolveVelocityUrl(version) {
+    const data = (await axios.get('https://api.papermc.io/v2/projects/velocity', { timeout: 15000 })).data;
+    const v = (data.versions || []).find(x => x === version) || data.versions?.[0];
+    const buildData = (await axios.get(`https://api.papermc.io/v2/projects/velocity/versions/${v}/builds`, { timeout: 15000 })).data;
+    const build = buildData.builds?.[buildData.builds.length - 1];
+    const name = build?.downloads?.application?.name || 'velocity.jar';
+    return { url: `https://api.papermc.io/v2/projects/velocity/versions/${v}/builds/${build.build}/downloads/${name}`, fileName: 'velocity.jar', version: v };
+}
+async function downloadServerSoftware(serverDir, serverType = 'paper', version = '1.21.11') {
+    if (serverType === 'paper') return await downloadPaperJar(serverDir, version);
+    if (serverType === 'vanilla') {
+        const url = await resolveVanillaUrl(version); const name = `vanilla-${version}.jar`;
+        await downloadRemoteFile(url, path.join(serverDir, name)); return name;
+    }
+    if (serverType === 'fabric') {
+        const url = await resolveFabricUrl(version); const name = `fabric-${version}.jar`;
+        await downloadRemoteFile(url, path.join(serverDir, name)); return name;
+    }
+    if (serverType === 'velocity') {
+        const resolved = await resolveVelocityUrl(version); await downloadRemoteFile(resolved.url, path.join(serverDir, resolved.fileName)); return resolved.fileName;
+    }
+    if (serverType === 'forge') {
+        const forgeVersions = {'1.21.1':'52.1.0','1.20.1':'47.3.0','1.19.4':'45.3.0','1.18.2':'40.2.21','1.16.5':'36.2.39'};
+        const forge = forgeVersions[version]; if (!forge) throw new Error(`No tested Forge build is configured for ${version}.`);
+        const installer = path.join(serverDir, `forge-${version}-${forge}-installer.jar`);
+        await downloadRemoteFile(`https://maven.minecraftforge.net/net/minecraftforge/forge/${version}-${forge}/forge-${version}-${forge}-installer.jar`, installer);
+        const javaCmd = findPortableJava(installDir, getRecommendedJavaVersion(version)) || 'java';
+        await new Promise((resolve, reject) => execFile(javaCmd, ['-jar', path.basename(installer), '--installServer'], { cwd: serverDir, timeout: 600000 }, (err) => err ? reject(new Error(`Forge server installation failed: ${err.message}`)) : resolve()));
+        const files = await fs.readdir(serverDir); const jar = files.find(f => /^forge-.*\.jar$/i.test(f) && !f.includes('installer')) || files.find(f => /server.*\.jar$/i.test(f));
+        if (!jar) throw new Error('Forge installer completed but no server JAR was produced.'); return jar;
+    }
+    if (serverType === 'spigot') {
+        const buildTools = path.join(serverDir, 'BuildTools.jar');
+        await downloadRemoteFile('https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar', buildTools);
+        const javaCmd = findPortableJava(installDir, getRecommendedJavaVersion(version)) || 'java';
+        await new Promise((resolve, reject) => execFile(javaCmd, ['-jar', 'BuildTools.jar', '--rev', version], { cwd: serverDir, timeout: 1800000 }, (err) => err ? reject(new Error(`Spigot BuildTools failed: ${err.message}`)) : resolve()));
+        const files = await fs.readdir(serverDir); const jar = files.find(f => new RegExp(`^spigot-${version.replaceAll('.', '\\.')}.*\\.jar$`).test(f)) || files.find(f => /^spigot-.*\.jar$/i.test(f));
+        if (!jar) throw new Error('BuildTools completed but no Spigot JAR was produced.'); return jar;
+    }
+    throw new Error(`Unsupported server type: ${serverType}`);
+}
 async function downloadPaperJar(serverDir, version) {
     let downloadUrl = PAPER_VERSIONS[version];
     if (!downloadUrl) {
@@ -915,7 +993,7 @@ async function downloadPaperJar(serverDir, version) {
 
 // ── Create server ───────────────────────────────────────────
 ipcMain.handle('create-server', async (_, opts) => {
-    // opts = { dir, name, ram, cpu, version }
+    // opts = { dir, name, ram, cpu, version, serverType }
     installDir = opts.dir;
     const serverDir = path.join(opts.dir, 'servers', opts.name);
     currentServerDir = serverDir;
@@ -924,7 +1002,8 @@ ipcMain.handle('create-server', async (_, opts) => {
         await fs.mkdir(serverDir, { recursive: true });
 
         // Download jar using direct URL from catalog ───────
-        const jarFileName = await downloadPaperJar(serverDir, opts.version);
+        const serverType = opts.serverType || 'paper';
+        const jarFileName = await downloadServerSoftware(serverDir, serverType, opts.version);
 
         // eula.txt
         await fs.writeFile(path.join(serverDir, 'eula.txt'), 'eula=true\n');
@@ -948,7 +1027,7 @@ ipcMain.handle('create-server', async (_, opts) => {
 
         // manager metadata
         const recJava = getRecommendedJavaVersion(opts.version);
-        const meta = { jarFileName, ram: opts.ram, cpu: opts.cpu, version: opts.version, javaVersion: 'auto' };
+        const meta = { jarFileName, ram: opts.ram, cpu: opts.cpu, version: opts.version, serverType, javaVersion: 'auto' };
         await fs.writeFile(path.join(serverDir, '.mcmeta.json'), JSON.stringify(meta, null, 2));
 
         // Ensure required Java version is ready
@@ -1076,7 +1155,7 @@ ipcMain.handle('reinstall-server', async () => {
     if (serverRunning) throw new Error('Stop the server first.');
     const metaData = await ensureServerMetadata(currentServerDir);
     // Redownload the jar
-    metaData.jarFileName = await downloadPaperJar(currentServerDir, metaData.version);
+    metaData.jarFileName = await downloadServerSoftware(currentServerDir, metaData.serverType || 'paper', metaData.version);
     const metaPath = path.join(currentServerDir, '.mcmeta.json');
     await fs.writeFile(metaPath, JSON.stringify(metaData, null, 2));
     return true;
@@ -1095,7 +1174,7 @@ ipcMain.handle('change-version', async (_, version) => {
 
     // Download new jar and update meta
     metaData.version = version;
-    metaData.jarFileName = await downloadPaperJar(currentServerDir, version);
+    metaData.jarFileName = await downloadServerSoftware(currentServerDir, metaData.serverType || 'paper', version);
 
     // If javaVersion is 'auto', ensure recommended Java version is ready
     const recJava = getRecommendedJavaVersion(version);
@@ -1353,20 +1432,17 @@ ipcMain.handle('get-network-info', async () => {
 });
 
 ipcMain.handle('server-kill', () => {
-    if (!serverProcess) return;
-    try {
-        if (serverProcess.pid) {
-            exec(`taskkill /F /T /PID ${serverProcess.pid}`, () => {});
-        } else {
-            serverProcess.kill();
-        }
-    } catch (_) {}
+    if (serverProcess) {
+        try {
+            if (process.platform === 'win32' && serverProcess.pid) exec(`taskkill /F /T /PID ${serverProcess.pid}`, () => {});
+            else serverProcess.kill('SIGKILL');
+        } catch (_) {}
+    }
+    if (playitProcess) { try { playitProcess.kill('SIGKILL'); } catch (_) {} playitProcess = null; }
     serverProcess = null;
     serverRunning = false;
-    if (playitProcess) {
-        try { playitProcess.kill(); } catch (e) {}
-        playitProcess = null;
-    }
+    if (mainWindow && !mainWindow.isDestroyed()) mainWindow.webContents.send('server-state', 'stopped');
+    return { success: true };
 });
 
 ipcMain.handle('server-command', (_, cmd) => {

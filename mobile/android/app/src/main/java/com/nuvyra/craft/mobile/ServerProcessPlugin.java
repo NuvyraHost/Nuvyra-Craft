@@ -205,6 +205,7 @@ public class ServerProcessPlugin extends Plugin {
     @PluginMethod
     public void createServer(PluginCall call) {
         String version = call.getString("version", "1.20.4");
+        String serverType = call.getString("serverType", "paper");
         String serverName = call.getString("name", "Nuvyra Server");
         String customDir = call.getString("dir", null);
         if (customDir != null && !customDir.trim().isEmpty()) {
@@ -236,6 +237,7 @@ public class ServerProcessPlugin extends Plugin {
                     JSObject obj = new JSObject();
                     obj.put("name", serverName);
                     obj.put("version", version);
+                    obj.put("serverType", serverType);
                     obj.put("ram", ramMb);
                     obj.put("created", System.currentTimeMillis());
                     obj.put("platform", "android");
@@ -251,7 +253,7 @@ public class ServerProcessPlugin extends Plugin {
                     notify.put("percent", 10);
                     notifyListeners("setup-progress", notify);
 
-                    String downloadJarUrl = getPaperDirectUrl(version);
+                    String downloadJarUrl = getServerDirectUrl(serverType, version);
 
                     URL currentUrl = new URL(downloadJarUrl);
                     HttpURLConnection conn = null;
@@ -328,6 +330,41 @@ public class ServerProcessPlugin extends Plugin {
      * Direct CDN URL catalog for Paper versions.
      * These are pre-resolved fill-data.papermc.io URLs that bypass the API entirely.
      */
+    /** Official/direct endpoints for the selected server software. Fabric's API resolves the loader; other software keeps its own distribution. */
+    private String getServerDirectUrl(String type, String version) {
+        if ("fabric".equalsIgnoreCase(type)) {
+            String loader = version.startsWith("1.21") ? "0.19.5" : "0.16.10";
+            return "https://meta.fabricmc.net/v2/versions/loader/" + version + "/" + loader + "/1.0.3/server/jar";
+        }
+        if ("spigot".equalsIgnoreCase(type)) return "https://download.getbukkit.org/spigot/spigot-" + version + ".jar";
+        if ("forge".equalsIgnoreCase(type)) {
+            String forge = "1.21.1".equals(version) ? "52.1.0" : ("1.20.1".equals(version) ? "47.3.0" : "40.2.21");
+            return "https://maven.minecraftforge.net/net/minecraftforge/forge/" + version + "-" + forge + "/forge-" + version + "-" + forge + "-installer.jar";
+        }
+        if ("velocity".equalsIgnoreCase(type)) return "https://api.papermc.io/v2/projects/velocity/versions/3.3.0/builds/" + "latest" + "/downloads/velocity-3.3.0.jar";
+        if ("vanilla".equalsIgnoreCase(type)) return resolveVanillaServerUrl(version);
+        return getPaperDirectUrl(version);
+    }
+
+    private String resolveVanillaServerUrl(String version) {
+        try {
+            URL manifest = new URL("https://piston-meta.mojang.com/mc/game/version_manifest_v2.json");
+            HttpURLConnection c = (HttpURLConnection) manifest.openConnection(); c.setConnectTimeout(15000); c.setReadTimeout(15000);
+            StringBuilder text = new StringBuilder();
+            try (BufferedReader r = new BufferedReader(new InputStreamReader(c.getInputStream()))) { String line; while ((line = r.readLine()) != null) text.append(line); }
+            String marker = "\"id\":\"" + version + "\"";
+            int at = text.indexOf(marker); if (at < 0) throw new IOException("Vanilla version not found");
+            int urlAt = text.indexOf("\"url\":\"", at); int end = text.indexOf("\"", urlAt + 8);
+            String detailUrl = text.substring(urlAt + 8, end).replace("\\/", "/");
+            URL detail = new URL(detailUrl); HttpURLConnection d = (HttpURLConnection) detail.openConnection();
+            StringBuilder detailText = new StringBuilder();
+            try (BufferedReader r = new BufferedReader(new InputStreamReader(d.getInputStream()))) { String line; while ((line = r.readLine()) != null) detailText.append(line); }
+            String download = "\"server\":{\"sha1\":\"";
+            int serverAt = detailText.indexOf(download); int urlPos = detailText.indexOf("\"url\":\"", serverAt);
+            return detailText.substring(urlPos + 8, detailText.indexOf("\"", urlPos + 8)).replace("\\/", "/");
+        } catch (Exception e) { throw new IllegalArgumentException("Could not resolve Vanilla server " + version + ": " + e.getMessage()); }
+    }
+
     private String getPaperDirectUrl(String version) {
         switch (version) {
             case "1.21.11":
@@ -926,6 +963,13 @@ public class ServerProcessPlugin extends Plugin {
         }).start();
     }
 
+    public static void killServerNow() {
+        try {
+            if (serverProcess != null) { serverProcess.destroyForcibly(); serverProcess = null; }
+            isRunning = false;
+        } catch (Throwable ignored) {}
+    }
+
     @PluginMethod
     public void kill(PluginCall call) {
         if (serverProcess != null) {
@@ -1377,6 +1421,7 @@ public class ServerProcessPlugin extends Plugin {
                     ret.put("cpuCores", c);
                 }
                 if (obj.has("version")) ret.put("version", obj.getString("version"));
+                if (obj.has("serverType")) ret.put("serverType", obj.getString("serverType"));
                 if (obj.has("javaVersion")) ret.put("javaVersion", obj.getString("javaVersion"));
                 else if (obj.has("java")) ret.put("javaVersion", obj.getString("java"));
             } catch (Exception ignored) {}
