@@ -1,5 +1,5 @@
 // ============================================================
-//  Jtg-craft — Renderer (all UI logic)
+//  Nuvyra-Craft — Renderer (all UI logic)
 // ============================================================
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -349,7 +349,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     async function startServer() {
         try {
             consoleEl.textContent = '';
-            appendConsole('[Jtg-craft] Starting server...\n');
+            appendConsole('[Nuvyra-Craft] Starting server...\n');
             await window.api.serverStart();
         } catch (e) {
             toast(e.message || 'Failed to start', 'error');
@@ -361,7 +361,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     $('#btn-stop').onclick = async () => {
         try {
-            appendConsole('[Jtg-craft] Stopping server...\n');
+            appendConsole('[Nuvyra-Craft] Stopping server...\n');
             await window.api.serverStop();
         } catch (e) { toast(e.message, 'error'); }
     };
@@ -379,7 +379,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         btnStop.disabled = true;
 
         try {
-            appendConsole('[Jtg-craft] 🔄 Restarting server safely...\n');
+            appendConsole('[Nuvyra-Craft] 🔄 Restarting server safely...\n');
             toast('Restarting server...', 'info');
 
             if (window.api && window.api.serverRestart) {
@@ -1597,11 +1597,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                         badgePill.className = 'badge-pill up-to-date';
                         badgePill.textContent = `● Up to Date`;
                     }
-                    statusEl.textContent = result.message || `You're up to date! Jtg-Craft v${result.version} is running.`;
+                    statusEl.textContent = result.message || `You're up to date! Nuvyra-Craft v${result.version} is running.`;
                     statusEl.style.color = 'var(--green-400)';
                     if (btnDownloadUpdate) btnDownloadUpdate.classList.add('hidden');
                     if (btnRelaunchUpdate) btnRelaunchUpdate.classList.add('hidden');
-                    toast('Your Jtg-Craft is running the latest version!');
+                    toast('Your Nuvyra-Craft is running the latest version!');
                 }
             } catch (e) {
                 statusEl.textContent = 'Could not complete update check. Please verify internet connection.';
@@ -1671,7 +1671,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 statusEl.textContent = `New update v${updateInfo.version} detected on GitHub! Click 'Download & Apply Update' to sync.`;
                 statusEl.style.color = 'var(--green-400)';
             }
-            toast(`Jtg-Craft v${updateInfo.version} is available! Open Settings to update.`);
+            toast(`Nuvyra-Craft v${updateInfo.version} is available! Open Settings to update.`);
         });
     }
 });

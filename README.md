@@ -1,12 +1,12 @@
-# 🎮 Jtg-Craft
+# 🎮 Nuvyra-Craft
 
 <div align="center">
 
-<img src="assets/logo.png" alt="Jtg-Craft Logo" width="128" height="128" style="border-radius: 24px; box-shadow: 0 8px 32px rgba(34, 197, 94, 0.25);" />
+<img src="assets/logo.png" alt="Nuvyra-Craft Logo" width="128" height="128" style="border-radius: 24px; box-shadow: 0 8px 32px rgba(34, 197, 94, 0.25);" />
 
 ### The Ultimate Minecraft Paper Server Manager for Windows & Android
 
-[![Release PC](https://img.shields.io/badge/PC_Release-v1.0.3-22c55e?style=for-the-badge&logo=github)](https://github.com/JishnuTheGamer/jtg-craft/releases)
+[![Release PC](https://img.shields.io/badge/PC_Release-v1.0.3-22c55e?style=for-the-badge&logo=github)](https://github.com/NuvyraHost/Nuvyra-Craft/releases)
 [![Mobile Edition](https://img.shields.io/badge/Mobile_Architecture-Android_6+-00E5FF?style=for-the-badge&logo=android&logoColor=white)](mobile/)
 [![Data Center](https://img.shields.io/badge/OTA_Update_Center-Active-9333EA?style=for-the-badge&logo=cloud&logoColor=white)](mobile/mobile-update-check.json)
 [![Minecraft](https://img.shields.io/badge/PaperMC-All_Versions-E67E22?style=for-the-badge&logo=minecraft&logoColor=white)](https://papermc.io/)
@@ -15,7 +15,7 @@
 
 A powerful, all-in-one server application designed to create, configure, manage, and scale high-performance Minecraft Paper servers with zero terminal complexity — with PC Desktop and private Android Mobile editions synchronized via GitHub Data Center.
 
-[⬇️ Download PC (.exe)](https://github.com/JishnuTheGamer/jtg-craft/releases) • [✨ Features](#-features) • [📱 Mobile Edition](#-jtg-craft-mobile-android) • [💻 Getting Started](#-getting-started) • [⚙️ Requirements](#️-system-requirements)
+[⬇️ Download PC (.exe)](https://github.com/NuvyraHost/Nuvyra-Craft/releases) • [✨ Features](#-features) • [📱 Mobile Edition](#-nuvyra-craft-mobile-android) • [💻 Getting Started](#-getting-started) • [⚙️ Requirements](#️-system-requirements)
 
 </div>
 
@@ -34,7 +34,7 @@ A powerful, all-in-one server application designed to create, configure, manage,
 - **Plugin Management** — Enable or disable plugins on the fly using intuitive toggle switches without deleting configurations, or upload custom local `.jar` files with ease.
 
 ### ☕ Smart Multi-Version Java Manager
-- **Zero Configuration Required** — Jtg-Craft automatically detects and provisions the optimal Java runtime for your server version:
+- **Zero Configuration Required** — Nuvyra-Craft automatically detects and provisions the optimal Java runtime for your server version:
   - **Java 25** — Tailored for Minecraft 26.x
   - **Java 21** — Tailored for Minecraft 1.20.5 – 1.21.x
   - **Java 17** — Tailored for Minecraft 1.18 – 1.20.4
@@ -64,7 +64,7 @@ A powerful, all-in-one server application designed to create, configure, manage,
 
 ## 💻 Getting Started
 
-1. **Download**: Grab the latest installer (`Jtg-craft Setup 1.0.0.exe`) from the [Official Releases](https://github.com/JishnuTheGamer/jtg-craft/releases).
+1. **Download**: Grab the latest installer (`Nuvyra-Craft Setup 1.0.0.exe`) from the [Official Releases](https://github.com/NuvyraHost/Nuvyra-Craft/releases).
 2. **Install**: Run the installer and follow the quick on-screen setup.
 3. **Launch & Create**:
    - Select an install directory on your computer.
@@ -75,9 +75,9 @@ A powerful, all-in-one server application designed to create, configure, manage,
 
 ---
 
-## 📱 Jtg-Craft Mobile (Android)
+## 📱 Nuvyra-Craft Mobile (Android)
 
-Run a full Minecraft Java Server in your pocket! **Jtg-craft Mobile** brings the complete power of desktop server management to Android devices.
+Run a full Minecraft Java Server in your pocket! **Nuvyra-Craft Mobile** brings the complete power of desktop server management to Android devices.
 
 ### 🌟 Mobile Highlights:
 - **Direct ARM64 JRE Execution** — Runs real Minecraft Paper Java servers natively on your phone using portable Linux aarch64 runtime.
@@ -111,18 +111,18 @@ Run a full Minecraft Java Server in your pocket! **Jtg-craft Mobile** brings the
 
 ## 📄 License & Credits
 
-**Jtg-Craft (Jishnu Craft)** is designed, created, and maintained by **[Jishnu Tech](https://github.com/JishnuTheGamer)**.
+**Nuvyra-Craft** is a NuvyraHost-branded fork of the original Jtg-Craft project by **[Jishnu Tech](https://github.com/JishnuTheGamer)**.
 
 This software is released under the **[MIT License with Mandatory Attribution](LICENSE)**.
 
 > [!IMPORTANT]
 > **Attribution Requirement:** Anyone utilizing, modifying, embedding, or redistributing this software or any of its individual components (including UI designs, server managers, Plugin Manager, or Java runtime systems) must provide prominent, visible credit to **Jishnu Tech** with a link back to this repository:
-> `https://github.com/JishnuTheGamer/jtg-craft`
+> `https://github.com/NuvyraHost/Nuvyra-Craft`
 
 ---
 
 <div align="center">
 
-Made with ❤️ by **[Jishnu Tech](https://github.com/JishnuTheGamer)**
+Nuvyra-Craft is maintained by **NuvyraHost**. Original attribution: **[Jishnu Tech](https://github.com/JishnuTheGamer)**
 
 </div>

@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0a0e1a">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Jtg-Craft</title>
+    <title>Nuvyra-Craft</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -21,7 +21,7 @@
     <div class="mobile-splash-ambient"></div>
     <div class="mobile-splash-content">
         <div class="mobile-splash-logo">
-            <img src="assets/logo.png" alt="Jtg-Craft Logo" class="mobile-splash-logo-img">
+            <img src="assets/logo.png" alt="Nuvyra-Craft Logo" class="mobile-splash-logo-img">
         </div>
         <div class="mobile-splash-tagline">Best Minecraft Server Manager</div>
         <div class="mobile-splash-dots">
@@ -54,7 +54,7 @@
 <!-- ═══════════ CUSTOM TITLE BAR ═══════════ -->
 <header id="titlebar">
     <div class="tb-title">
-        <span class="tb-icon" style="display: flex; align-items: center;"><img src="assets/logo.png" style="width:16px;height:16px;border-radius:3px;"></span> Jtg-Craft
+        <span class="tb-icon" style="display: flex; align-items: center;"><img src="assets/logo.png" style="width:16px;height:16px;border-radius:3px;"></span> Nuvyra-Craft
     </div>
     <div class="tb-controls">
         <button id="tb-min" title="Minimize">─</button>
@@ -70,9 +70,9 @@
 <section id="screen-welcome" class="screen hidden">
     <div class="welcome-wrap">
         <div class="welcome-logo" style="margin-bottom: 24px;">
-            <img src="assets/logo.png" alt="Jtg-Craft Logo" style="width: 100px; height: 100px; border-radius: 16px; box-shadow: 0 8px 30px rgba(0,0,0,0.4);">
+            <img src="assets/logo.png" alt="Nuvyra-Craft Logo" style="width: 100px; height: 100px; border-radius: 16px; box-shadow: 0 8px 30px rgba(0,0,0,0.4);">
         </div>
-        <h1 class="welcome-title">Welcome to Jtg-Craft</h1>
+        <h1 class="welcome-title">Welcome to Nuvyra-Craft</h1>
         <p class="welcome-sub">Create, configure & manage your Minecraft Paper server — everything is automated.</p>
 
         <button id="btn-get-started" class="btn primary large">Get Started</button>
@@ -83,7 +83,7 @@
 <section id="screen-setup" class="screen hidden">
     <div class="setup-card">
         <h2>⚡ Setting Up Environment</h2>
-        <p class="setup-desc">Jtg-craft will automatically download and install everything you need.</p>
+        <p class="setup-desc">Nuvyra-Craft will automatically download and install everything you need.</p>
 
         <!-- Step 1: Java -->
         <div class="setup-step" id="step-java">
@@ -126,7 +126,7 @@
             <div class="storage-perm-icon">📂</div>
             <div class="storage-perm-text">
                 <strong>Storage Access Recommended</strong>
-                <span>Allow "All Files Access" so Jtg-craft can create your server folder in phone storage for easy editing in file managers.</span>
+                <span>Allow "All Files Access" so Nuvyra-Craft can create your server folder in phone storage for easy editing in file managers.</span>
             </div>
             <button type="button" id="btn-grant-storage" class="btn primary sm">Grant Permission</button>
         </div>
@@ -134,19 +134,19 @@
         <div class="field">
             <label>Install Directory</label>
             <div class="field-row">
-                <input type="text" id="inp-dir" value="/storage/emulated/0/JtgCraft/server" placeholder="Enter or choose server folder...">
+                <input type="text" id="inp-dir" value="/storage/emulated/0/NuvyraCraft/server" placeholder="Enter or choose server folder...">
                 <button id="btn-pick-dir" class="btn secondary sm">Browse</button>
             </div>
             <div class="dir-presets">
-                <button type="button" class="dir-preset-chip active" data-dir="/storage/emulated/0/JtgCraft/server">📱 Phone Storage (Accessible in Files)</button>
-                <button type="button" class="dir-preset-chip" data-dir="/storage/emulated/0/Download/JtgCraft/server">📁 Downloads Folder</button>
-                <button type="button" class="dir-preset-chip" data-dir="/data/data/com.jtgcraft.mobile/files/servers/default">⚡ App Storage (Isolated)</button>
+                <button type="button" class="dir-preset-chip active" data-dir="/storage/emulated/0/NuvyraCraft/server">📱 Phone Storage (Accessible in Files)</button>
+                <button type="button" class="dir-preset-chip" data-dir="/storage/emulated/0/Download/NuvyraCraft/server">📁 Downloads Folder</button>
+                <button type="button" class="dir-preset-chip" data-dir="/data/data/com.nuvyra.craft.mobile/files/servers/default">⚡ App Storage (Isolated)</button>
             </div>
         </div>
 
         <div class="field">
             <label>Server Name</label>
-            <input type="text" id="inp-name" value="Jtg Server" placeholder="my_server" maxlength="32">
+            <input type="text" id="inp-name" value="Nuvyra Server" placeholder="my_server" maxlength="32">
             <small class="hint">Only letters, numbers and underscores</small>
         </div>
 
@@ -200,7 +200,7 @@
             <div class="drawer-brand">
                 <img src="assets/logo.png" style="width:28px;height:28px;border-radius:8px;">
                 <div class="drawer-brand-text">
-                    <span class="drawer-title">Jtg-Craft</span>
+                    <span class="drawer-title">Nuvyra-Craft</span>
                     <span id="drawer-server-name" class="drawer-subtitle">Server</span>
                 </div>
             </div>
@@ -506,7 +506,7 @@
             <div class="backup-location-card">
                 <div class="backup-loc-info">
                     <span class="backup-loc-label">📂 Storage Path:</span>
-                    <span id="backup-storage-path" class="backup-loc-path" title="Click copy to copy directory">/storage/emulated/0/JtgCraft/server/backups</span>
+                    <span id="backup-storage-path" class="backup-loc-path" title="Click copy to copy directory">/storage/emulated/0/NuvyraCraft/server/backups</span>
                 </div>
                 <button id="btn-copy-backup-path" class="btn secondary btn-sm" type="button" title="Copy backup path">📋 Copy Path</button>
             </div>
@@ -654,7 +654,7 @@
                             </div>
                             <div class="update-info-item">
                                 <span class="lbl">GitHub Source</span>
-                                <span class="val">JishnuTheGamer/jtg-craft (main)</span>
+                                <span class="val">NuvyraHost/Nuvyra-Craft (main)</span>
                             </div>
                             <div class="update-info-item">
                                 <span class="lbl">Update Channel</span>

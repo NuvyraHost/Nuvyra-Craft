@@ -1,5 +1,5 @@
 # ============================================================
-#  Jtg-craft Mobile — Automated Portable APK Builder
+#  Nuvyra-Craft Mobile — Automated Portable APK Builder
 #  Downloads portable JDK 17 + Android SDK & compiles APK
 # ============================================================
 
@@ -11,7 +11,7 @@ $SdkDir = Join-Path $BuildEnv "android-sdk"
 $ApkOutDir = Join-Path $ScriptDir "apk"
 
 Write-Host "========================================" -ForegroundColor Cyan
-Write-Host "  Jtg-craft Mobile — APK Build Engine  " -ForegroundColor Cyan
+Write-Host "  Nuvyra-Craft Mobile — APK Build Engine  " -ForegroundColor Cyan
 Write-Host "========================================" -ForegroundColor Cyan
 
 if (-not (Test-Path $BuildEnv)) { New-Item -ItemType Directory -Path $BuildEnv -Force | Out-Null }
@@ -123,7 +123,7 @@ try {
 # ── 6. Copy Finished APK to mobile\apk\ ──────────────────────
 $builtApk = Join-Path $ScriptDir "android\app\build\outputs\apk\debug\app-debug.apk"
 if (Test-Path $builtApk) {
-    $targetApk = Join-Path $ApkOutDir "jtg-craft-mobile-v1.apk"
+    $targetApk = Join-Path $ApkOutDir "nuvyra-craft-mobile-v1.apk"
     Copy-Item -Path $builtApk -Destination $targetApk -Force
     
     Write-Host "`n========================================================" -ForegroundColor Green

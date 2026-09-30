@@ -1,4 +1,4 @@
-package com.jtgcraft.mobile;
+package com.nuvyra.craft.mobile;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -20,7 +20,7 @@ import java.util.zip.InflaterInputStream;
 @CapacitorPlugin(name = "JavaManager")
 public class JavaManagerPlugin extends Plugin {
 
-    private static final String PREFS_NAME = "jtg_java_prefs";
+    private static final String PREFS_NAME = "nuvyra_java_prefs";
     private static final String KEY_JAVA_SETTING = "java_version_setting";
 
     // Primary Android-native OpenJDK 17 (ARM64 Bionic libc from PojavLauncher)
@@ -71,9 +71,9 @@ public class JavaManagerPlugin extends Plugin {
 
             // Priority 3: External public storage ONLY if canRead() and test read succeeds
             File[] pubCandidates = new File[] {
-                new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "JtgCraft/jre17-android.tar.xz"),
-                new File("/storage/emulated/0/Download/JtgCraft/jre17-android.tar.xz"),
-                new File("/sdcard/Download/JtgCraft/jre17-android.tar.xz")
+                new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "NuvyraCraft/jre17-android.tar.xz"),
+                new File("/storage/emulated/0/Download/NuvyraCraft/jre17-android.tar.xz"),
+                new File("/sdcard/Download/NuvyraCraft/jre17-android.tar.xz")
             };
             for (File f : pubCandidates) {
                 if (f != null && f.exists() && f.canRead() && f.length() > 10000000) {
@@ -112,11 +112,11 @@ public class JavaManagerPlugin extends Plugin {
 
             // Priority 3: External public storage ONLY if canRead() and test read succeeds
             File[] pubCandidates = new File[] {
-                new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "JtgCraft/jre21-android.tar.xz"),
+                new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "NuvyraCraft/jre21-android.tar.xz"),
                 new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "jre21-android.tar.xz"),
-                new File("/storage/emulated/0/Download/JtgCraft/jre21-android.tar.xz"),
+                new File("/storage/emulated/0/Download/NuvyraCraft/jre21-android.tar.xz"),
                 new File("/storage/emulated/0/Download/jre21-android.tar.xz"),
-                new File("/sdcard/Download/JtgCraft/jre21-android.tar.xz"),
+                new File("/sdcard/Download/NuvyraCraft/jre21-android.tar.xz"),
                 new File("/sdcard/Download/jre21-android.tar.xz")
             };
             for (File f : pubCandidates) {
@@ -335,7 +335,7 @@ public class JavaManagerPlugin extends Plugin {
         int redirects = 0;
         while (redirects < 8) {
             HttpURLConnection conn = (HttpURLConnection) currentUrl.openConnection();
-            conn.setRequestProperty("User-Agent", "Mozilla/5.0 JtgCraft/1.0 (Android)");
+            conn.setRequestProperty("User-Agent", "Mozilla/5.0 NuvyraCraft/1.0 (Android)");
             conn.setInstanceFollowRedirects(false);
             conn.setConnectTimeout(25000);
             conn.setReadTimeout(60000);
@@ -362,7 +362,7 @@ public class JavaManagerPlugin extends Plugin {
         int redirects = 0;
         while (redirects < 6) {
             conn = (HttpURLConnection) current.openConnection();
-            conn.setRequestProperty("User-Agent", "Mozilla/5.0 JtgCraft/1.0 (Android)");
+            conn.setRequestProperty("User-Agent", "Mozilla/5.0 NuvyraCraft/1.0 (Android)");
             conn.setRequestProperty("Range", "bytes=" + start + "-" + end);
             conn.setConnectTimeout(25000);
             conn.setReadTimeout(120000);
@@ -453,7 +453,7 @@ public class JavaManagerPlugin extends Plugin {
                     int redirects = 0;
                     while (redirects < 6) {
                         conn = (HttpURLConnection) currentUrl.openConnection();
-                        conn.setRequestProperty("User-Agent", "Mozilla/5.0 JtgCraft/1.0 (Android)");
+                        conn.setRequestProperty("User-Agent", "Mozilla/5.0 NuvyraCraft/1.0 (Android)");
                         conn.setInstanceFollowRedirects(true);
                         conn.setConnectTimeout(20000);
                         conn.setReadTimeout(60000);

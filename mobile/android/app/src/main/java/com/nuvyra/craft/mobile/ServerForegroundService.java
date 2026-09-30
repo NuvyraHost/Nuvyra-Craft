@@ -1,4 +1,4 @@
-package com.jtgcraft.mobile;
+package com.nuvyra.craft.mobile;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -13,7 +13,7 @@ import android.os.PowerManager;
 import androidx.core.app.NotificationCompat;
 
 public class ServerForegroundService extends Service {
-    private static final String CHANNEL_ID = "jtg_server_channel";
+    private static final String CHANNEL_ID = "nuvyra_server_channel";
     private static final int NOTIFICATION_ID = 1001;
     private PowerManager.WakeLock wakeLock;
     private android.net.wifi.WifiManager.WifiLock wifiLock;
@@ -39,7 +39,7 @@ public class ServerForegroundService extends Service {
         );
 
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("Jtg-craft Server")
+                .setContentTitle("Nuvyra-Craft Server")
                 .setContentText("Minecraft Paper Server is running in background")
                 .setSmallIcon(android.R.drawable.ic_media_play)
                 .setContentIntent(pendingIntent)
@@ -63,7 +63,7 @@ public class ServerForegroundService extends Service {
         try {
             PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
             if (powerManager != null && (wakeLock == null || !wakeLock.isHeld())) {
-                wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "JtgCraft:ServerWakeLock");
+                wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "NuvyraCraft:ServerWakeLock");
                 wakeLock.setReferenceCounted(false);
                 wakeLock.acquire();
             }
@@ -76,15 +76,15 @@ public class ServerForegroundService extends Service {
             android.net.wifi.WifiManager wifiManager = (android.net.wifi.WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
             if (wifiManager != null && (wifiLock == null || !wifiLock.isHeld())) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    wifiLock = wifiManager.createWifiLock(android.net.wifi.WifiManager.WIFI_MODE_FULL_LOW_LATENCY, "JtgCraft:ServerWifiLock");
+                    wifiLock = wifiManager.createWifiLock(android.net.wifi.WifiManager.WIFI_MODE_FULL_LOW_LATENCY, "NuvyraCraft:ServerWifiLock");
                 } else {
-                    wifiLock = wifiManager.createWifiLock(android.net.wifi.WifiManager.WIFI_MODE_FULL_HIGH_PERF, "JtgCraft:ServerWifiLock");
+                    wifiLock = wifiManager.createWifiLock(android.net.wifi.WifiManager.WIFI_MODE_FULL_HIGH_PERF, "NuvyraCraft:ServerWifiLock");
                 }
                 wifiLock.setReferenceCounted(false);
                 wifiLock.acquire();
             }
             if (wifiManager != null && (multicastLock == null || !multicastLock.isHeld())) {
-                multicastLock = wifiManager.createMulticastLock("JtgCraft:ServerMulticastLock");
+                multicastLock = wifiManager.createMulticastLock("NuvyraCraft:ServerMulticastLock");
                 multicastLock.setReferenceCounted(false);
                 multicastLock.acquire();
             }
@@ -110,7 +110,7 @@ public class ServerForegroundService extends Service {
                         Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? PendingIntent.FLAG_IMMUTABLE : 0
                 );
                 Notification notification = new NotificationCompat.Builder(ctx, CHANNEL_ID)
-                        .setContentTitle("Jtg-craft Server")
+                        .setContentTitle("Nuvyra-Craft Server")
                         .setContentText(text)
                         .setSmallIcon(android.R.drawable.ic_media_play)
                         .setContentIntent(pendingIntent)
@@ -160,7 +160,7 @@ public class ServerForegroundService extends Service {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel serviceChannel = new NotificationChannel(
                     CHANNEL_ID,
-                    "Jtg-craft Background Server",
+                    "Nuvyra-Craft Background Server",
                     NotificationManager.IMPORTANCE_LOW
             );
             serviceChannel.setDescription("Keeps your Minecraft server running without interruption");

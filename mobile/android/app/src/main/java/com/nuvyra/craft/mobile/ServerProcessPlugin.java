@@ -1,4 +1,4 @@
-package com.jtgcraft.mobile;
+package com.nuvyra.craft.mobile;
 
 import android.content.Context;
 import android.content.Intent;
@@ -26,13 +26,13 @@ public class ServerProcessPlugin extends Plugin {
     private static boolean isRunning = false;
     private static long startTime = 0;
 
-    public static final String PREFS_NAME = "jtg_server_prefs";
+    public static final String PREFS_NAME = "nuvyra_server_prefs";
     public static final String KEY_SERVER_DIR = "active_server_dir";
 
     public static File getPreferredStorageRoot(Context ctx) {
-        // Priority 1: Phone Public Storage /storage/emulated/0/JtgCraft/server
+        // Priority 1: Phone Public Storage /storage/emulated/0/NuvyraCraft/server
         try {
-            File pub = new File(Environment.getExternalStorageDirectory(), "JtgCraft/server");
+            File pub = new File(Environment.getExternalStorageDirectory(), "NuvyraCraft/server");
             if (pub.exists() || pub.mkdirs()) {
                 File test = new File(pub, ".probe");
                 if (test.createNewFile()) {
@@ -42,11 +42,11 @@ public class ServerProcessPlugin extends Plugin {
             }
         } catch (Throwable ignored) {}
 
-        // Priority 2: App external storage /storage/emulated/0/Android/data/.../files/JtgCraft/server
+        // Priority 2: App external storage /storage/emulated/0/Android/data/.../files/NuvyraCraft/server
         try {
             File ext = ctx.getExternalFilesDir(null);
             if (ext != null) {
-                File extDir = new File(ext, "JtgCraft/server");
+                File extDir = new File(ext, "NuvyraCraft/server");
                 if (extDir.exists() || extDir.mkdirs()) {
                     return extDir;
                 }
@@ -110,7 +110,7 @@ public class ServerProcessPlugin extends Plugin {
 
         if (configured == null || configured.trim().isEmpty() || "auto".equalsIgnoreCase(configured.trim())) {
             try {
-                android.content.SharedPreferences prefs = getContext().getSharedPreferences("jtg_java_prefs", Context.MODE_PRIVATE);
+                android.content.SharedPreferences prefs = getContext().getSharedPreferences("nuvyra_java_prefs", Context.MODE_PRIVATE);
                 String prefSetting = prefs.getString("java_version_setting", "auto");
                 if (prefSetting != null && !prefSetting.trim().isEmpty() && !"auto".equalsIgnoreCase(prefSetting.trim())) {
                     configured = prefSetting.trim();
@@ -193,7 +193,7 @@ public class ServerProcessPlugin extends Plugin {
         if (!meta.exists()) {
             try (FileWriter fw = new FileWriter(meta)) {
                 JSObject obj = new JSObject();
-                obj.put("name", "Jtg Server");
+                obj.put("name", "Nuvyra Server");
                 obj.put("version", "1.20.4");
                 obj.put("created", System.currentTimeMillis());
                 obj.put("platform", "android");
@@ -205,7 +205,7 @@ public class ServerProcessPlugin extends Plugin {
     @PluginMethod
     public void createServer(PluginCall call) {
         String version = call.getString("version", "1.20.4");
-        String serverName = call.getString("name", "Jtg Server");
+        String serverName = call.getString("name", "Nuvyra Server");
         String customDir = call.getString("dir", null);
         if (customDir != null && !customDir.trim().isEmpty()) {
             setActiveServerDir(getContext(), customDir);
@@ -226,7 +226,7 @@ public class ServerProcessPlugin extends Plugin {
                 File props = new File(sdir, "server.properties");
                 if (!props.exists()) {
                     try (FileWriter fw = new FileWriter(props)) {
-                        fw.write("server-port=25565\nmotd=A Minecraft Server Powered by Jtg-craft Mobile\nonline-mode=false\nmax-players=10\npvp=true\ndifficulty=easy\n");
+                        fw.write("server-port=25565\nmotd=A Minecraft Server Powered by Nuvyra-Craft Mobile\nonline-mode=false\nmax-players=10\npvp=true\ndifficulty=easy\n");
                     }
                 }
 
@@ -260,7 +260,7 @@ public class ServerProcessPlugin extends Plugin {
                     // Follow redirects manually (handles cross-domain redirects)
                     while (redirects < 6) {
                         conn = (HttpURLConnection) currentUrl.openConnection();
-                        conn.setRequestProperty("User-Agent", "Mozilla/5.0 JtgCraft/1.0 (Android)");
+                        conn.setRequestProperty("User-Agent", "Mozilla/5.0 NuvyraCraft/1.0 (Android)");
                         conn.setInstanceFollowRedirects(true);
                         conn.setConnectTimeout(15000);
                         conn.setReadTimeout(60000);
@@ -497,7 +497,7 @@ public class ServerProcessPlugin extends Plugin {
 
             JSObject banner = new JSObject();
             banner.put("text",
-                "\n[Jtg-craft] \uD83C\uDFAE Server Online! Same Phone: 127.0.0.1:" + port + " | Wi-Fi: " + bestLan + ":" + port + "\n\n"
+                "\n[Nuvyra-Craft] \uD83C\uDFAE Server Online! Same Phone: 127.0.0.1:" + port + " | Wi-Fi: " + bestLan + ":" + port + "\n\n"
             );
             notifyListeners("console-data", banner);
         } catch (Exception ignored) {}
@@ -787,7 +787,7 @@ public class ServerProcessPlugin extends Plugin {
         new Thread(() -> {
             try {
                 JSObject restartingMsg = new JSObject();
-                restartingMsg.put("text", "[Jtg-craft] 🔄 Restarting Minecraft server safely...\n");
+                restartingMsg.put("text", "[Nuvyra-Craft] 🔄 Restarting Minecraft server safely...\n");
                 notifyListeners("console-data", restartingMsg);
 
                 // Update notification text safely
@@ -807,7 +807,7 @@ public class ServerProcessPlugin extends Plugin {
                             boolean finished = serverProcess.waitFor(7, java.util.concurrent.TimeUnit.SECONDS);
                             if (!finished) {
                                 JSObject forceMsg = new JSObject();
-                                forceMsg.put("text", "[Jtg-craft] Server took too long to stop, forcing termination...\n");
+                                forceMsg.put("text", "[Nuvyra-Craft] Server took too long to stop, forcing termination...\n");
                                 notifyListeners("console-data", forceMsg);
                                 serverProcess.destroyForcibly();
                                 serverProcess.waitFor(2, java.util.concurrent.TimeUnit.SECONDS);
@@ -973,7 +973,7 @@ public class ServerProcessPlugin extends Plugin {
         JSObject ret = new JSObject();
         Properties p = new Properties();
         // Baseline defaults for mobile server
-        p.setProperty("motd", "A Jtg-Craft Minecraft Server");
+        p.setProperty("motd", "A Nuvyra-Craft Minecraft Server");
         p.setProperty("server-port", "25565");
         p.setProperty("gamemode", "survival");
         p.setProperty("difficulty", "easy");
@@ -1019,7 +1019,7 @@ public class ServerProcessPlugin extends Plugin {
                 }
             }
             try (FileOutputStream out = new FileOutputStream(pf)) {
-                p.store(out, "Jtg-craft Mobile Configuration");
+                p.store(out, "Nuvyra-Craft Mobile Configuration");
             }
             JSObject res = new JSObject();
             res.put("success", true);
@@ -1087,7 +1087,7 @@ public class ServerProcessPlugin extends Plugin {
                 String downloadJarUrl = getPaperDirectUrl(newVer);
                 URL u = new URL(downloadJarUrl);
                 HttpURLConnection conn = (HttpURLConnection) u.openConnection();
-                conn.setRequestProperty("User-Agent", "Mozilla/5.0 JtgCraft/1.0 (Android)");
+                conn.setRequestProperty("User-Agent", "Mozilla/5.0 NuvyraCraft/1.0 (Android)");
                 conn.setInstanceFollowRedirects(true);
                 conn.connect();
 
@@ -1169,7 +1169,7 @@ public class ServerProcessPlugin extends Plugin {
                 String downloadJarUrl = getPaperDirectUrl(ver);
                 URL u = new URL(downloadJarUrl);
                 HttpURLConnection conn = (HttpURLConnection) u.openConnection();
-                conn.setRequestProperty("User-Agent", "Mozilla/5.0 JtgCraft/1.0 (Android)");
+                conn.setRequestProperty("User-Agent", "Mozilla/5.0 NuvyraCraft/1.0 (Android)");
                 conn.setInstanceFollowRedirects(true);
                 conn.connect();
 
@@ -1534,10 +1534,10 @@ public class ServerProcessPlugin extends Plugin {
             props.setProperty("network-compression-threshold", "256");
             props.setProperty("difficulty", props.getProperty("difficulty", "easy"));
             props.setProperty("pvp", props.getProperty("pvp", "true"));
-            props.setProperty("motd", props.getProperty("motd", "A Minecraft Server Powered by Jtg-craft Mobile"));
+            props.setProperty("motd", props.getProperty("motd", "A Minecraft Server Powered by Nuvyra-Craft Mobile"));
 
             try (FileOutputStream fos = new FileOutputStream(propsFile)) {
-                props.store(fos, "Configured by Jtg-craft Mobile");
+                props.store(fos, "Configured by Nuvyra-Craft Mobile");
             }
 
             // 2. Optimize spigot.yml (disable timeout kill)
@@ -1604,7 +1604,7 @@ public class ServerProcessPlugin extends Plugin {
                     boolean patched = patchPlayitJarIfNeeded(jarFile);
                     if (patched) {
                         JSObject pMsg = new JSObject();
-                        pMsg.put("text", "[Jtg-craft] 🛡️ Applied Playit tunnel IPv4 compatibility patch.\n");
+                        pMsg.put("text", "[Nuvyra-Craft] 🛡️ Applied Playit tunnel IPv4 compatibility patch.\n");
                         notifyListeners("console-data", pMsg);
                     }
                 }

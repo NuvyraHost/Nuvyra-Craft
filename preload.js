@@ -1,5 +1,5 @@
 // ============================================================
-//  Jtg-craft — Preload — Context Bridge (safe IPC exposure)
+//  Nuvyra-Craft — Preload — Context Bridge (safe IPC exposure)
 // ============================================================
 const { contextBridge, ipcRenderer, webUtils } = require('electron');
 

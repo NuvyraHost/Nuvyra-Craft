@@ -1,5 +1,5 @@
 // ============================================================
-//  Jtg-craft Mobile — Bridge (replaces Electron preload.js)
+//  Nuvyra-Craft Mobile — Bridge (replaces Electron preload.js)
 //  Vanilla JS compatible — ZERO bare module imports
 //  Guarantees instant, error-free window.api initialization
 // ============================================================
@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    console.log('[Jtg-craft Mobile] Initializing mobile bridge...');
+    console.log('[Nuvyra-Craft Mobile] Initializing mobile bridge...');
 
     // ── Capacitor Plugin Reference ──────────────────────────────
     const Cap = window.Capacitor || { Plugins: {} };
@@ -29,8 +29,8 @@
     const BUNDLED_APP_VERSION_CODE = 1007;
 
     const MOBILE_GITHUB_CONFIG = {
-        owner: 'JishnuTheGamer',
-        repo: 'jtg-craft',
+        owner: 'NuvyraHost',
+        repo: 'Nuvyra-Craft',
         branch: 'main',
         get rawManifestUrl() {
             return `https://raw.githubusercontent.com/${this.owner}/${this.repo}/${this.branch}/mobile/mobile-update-check.json`;
@@ -646,11 +646,11 @@
             try {
                 if (FileManager.pickDirectory) {
                     const res = await FileManager.pickDirectory({ dir: customDir || '' });
-                    return res.path || '/data/data/com.jtgcraft.mobile/files/servers/default';
+                    return res.path || '/data/data/com.nuvyra.craft.mobile/files/servers/default';
                 }
-                return '/data/data/com.jtgcraft.mobile/files/servers/default';
+                return '/data/data/com.nuvyra.craft.mobile/files/servers/default';
             } catch (e) {
-                return '/data/data/com.jtgcraft.mobile/files/servers/default';
+                return '/data/data/com.nuvyra.craft.mobile/files/servers/default';
             }
         },
         checkExistingServer: async (dir) => {
@@ -659,8 +659,8 @@
                     const res = await FileManager.checkExistingServer({ dir });
                     return {
                         exists: !!res.exists,
-                        name: res.name || 'Jtg Server',
-                        meta: res.meta || { name: 'Jtg Server', version: '1.20.4' }
+                        name: res.name || 'Nuvyra Server',
+                        meta: res.meta || { name: 'Nuvyra Server', version: '1.20.4' }
                     };
                 }
                 return { exists: false };
@@ -796,11 +796,11 @@
             try {
                 if (FileManager.getServerDir) {
                     const res = await FileManager.getServerDir();
-                    return res.path || '/data/data/com.jtgcraft.mobile/files/servers/default';
+                    return res.path || '/data/data/com.nuvyra.craft.mobile/files/servers/default';
                 }
-                return '/data/data/com.jtgcraft.mobile/files/servers/default';
+                return '/data/data/com.nuvyra.craft.mobile/files/servers/default';
             } catch (e) {
-                return '/data/data/com.jtgcraft.mobile/files/servers/default';
+                return '/data/data/com.nuvyra.craft.mobile/files/servers/default';
             }
         },
 
@@ -830,15 +830,15 @@
                     return await FileManager.getDefaultStoragePaths();
                 }
                 return {
-                    phoneStorage: '/storage/emulated/0/JtgCraft/server',
-                    downloads: '/storage/emulated/0/Download/JtgCraft/server',
-                    appStorage: '/data/data/com.jtgcraft.mobile/files/servers/default'
+                    phoneStorage: '/storage/emulated/0/NuvyraCraft/server',
+                    downloads: '/storage/emulated/0/Download/NuvyraCraft/server',
+                    appStorage: '/data/data/com.nuvyra.craft.mobile/files/servers/default'
                 };
             } catch (e) {
                 return {
-                    phoneStorage: '/storage/emulated/0/JtgCraft/server',
-                    downloads: '/storage/emulated/0/Download/JtgCraft/server',
-                    appStorage: '/data/data/com.jtgcraft.mobile/files/servers/default'
+                    phoneStorage: '/storage/emulated/0/NuvyraCraft/server',
+                    downloads: '/storage/emulated/0/Download/NuvyraCraft/server',
+                    appStorage: '/data/data/com.nuvyra.craft.mobile/files/servers/default'
                 };
             }
         },
@@ -923,7 +923,7 @@
         // ── Properties ────────────────────────────────────────
         propsGet: async () => {
             const defaultProps = {
-                'motd': 'A Jtg-Craft Minecraft Server',
+                'motd': 'A Nuvyra-Craft Minecraft Server',
                 'server-port': '25565',
                 'gamemode': 'survival',
                 'difficulty': 'easy',
@@ -1419,7 +1419,7 @@
         platform: 'android'
     };
 
-    console.log('[Jtg-craft Mobile] Bridge initialized successfully with full Electron API parity.');
+    console.log('[Nuvyra-Craft Mobile] Bridge initialized successfully with full Electron API parity.');
 
     // ── Automatic Background Update Detection (Parity with PC) ──
     setTimeout(async () => {

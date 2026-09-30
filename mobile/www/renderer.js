@@ -1,5 +1,5 @@
 // ============================================================
-//  Jtg-craft — Renderer (all UI logic)
+//  Nuvyra-Craft — Renderer (all UI logic)
 // ============================================================
 
 const initApp = async () => {
@@ -148,7 +148,7 @@ const initApp = async () => {
         } catch (_) {}
 
         // Permission is not granted yet -> check if target path is isolated app storage
-        const targetDir = dir || ($('#inp-dir') ? $('#inp-dir').value.trim() : '') || savedDir || '/storage/emulated/0/JtgCraft/server';
+        const targetDir = dir || ($('#inp-dir') ? $('#inp-dir').value.trim() : '') || savedDir || '/storage/emulated/0/NuvyraCraft/server';
         const isIsolated = targetDir.includes('/data/data/') || targetDir.includes('/files/servers/');
         if (isIsolated) {
             banner.classList.add('hidden');
@@ -204,14 +204,14 @@ const initApp = async () => {
     // ══════════════════════════════════════════════════════════
     async function initAppOnStartup() {
         try {
-            // 1. Resolve preferred default storage paths (/storage/emulated/0/JtgCraft/server)
+            // 1. Resolve preferred default storage paths (/storage/emulated/0/NuvyraCraft/server)
             let storagePaths = null;
             if (window.api && window.api.getDefaultStoragePaths) {
                 storagePaths = await window.api.getDefaultStoragePaths().catch(() => null);
             }
 
             if (!savedDir) {
-                savedDir = (storagePaths && storagePaths.phoneStorage) ? storagePaths.phoneStorage : '/storage/emulated/0/JtgCraft/server';
+                savedDir = (storagePaths && storagePaths.phoneStorage) ? storagePaths.phoneStorage : '/storage/emulated/0/NuvyraCraft/server';
                 localStorage.setItem('jtg-install-dir', savedDir);
             }
 
@@ -223,7 +223,7 @@ const initApp = async () => {
             const check = await window.api.checkExistingServer(savedDir).catch(() => ({ exists: false }));
             if (check && check.exists) {
                 // Existing server detected -> Jump directly to dashboard
-                const sName = check.name || 'Jtg Server';
+                const sName = check.name || 'Nuvyra Server';
                 $('#sidebar-server-name').textContent = sName;
                 const drName = $('#drawer-server-name');
                 if (drName) drName.textContent = sName;
@@ -285,7 +285,7 @@ const initApp = async () => {
         const statusEl = $('#create-status');
         if (statusEl) statusEl.textContent = '';
         if ($('#inp-name') && (!($('#inp-name').value) || !($('#inp-name').value.trim()))) {
-            $('#inp-name').value = 'Jtg Server';
+            $('#inp-name').value = 'Nuvyra Server';
         }
     }
 
@@ -299,7 +299,7 @@ const initApp = async () => {
     //  CREATE SCREEN
     // ══════════════════════════════════════════════════════════
     $('#btn-pick-dir').onclick = async () => {
-        const currentVal = $('#inp-dir').value.trim() || savedDir || '/storage/emulated/0/JtgCraft/server';
+        const currentVal = $('#inp-dir').value.trim() || savedDir || '/storage/emulated/0/NuvyraCraft/server';
         const customPrompt = prompt('Enter or edit server install folder path:', currentVal);
         if (customPrompt && customPrompt.trim()) {
             const dir = await window.api.pickDirectory(customPrompt.trim());
@@ -358,7 +358,7 @@ const initApp = async () => {
             return;
         }
 
-        const chosenDir = $('#inp-dir').value.trim() || savedDir || '/storage/emulated/0/JtgCraft/server';
+        const chosenDir = $('#inp-dir').value.trim() || savedDir || '/storage/emulated/0/NuvyraCraft/server';
         savedDir = chosenDir;
         localStorage.setItem('jtg-install-dir', savedDir);
 
@@ -581,7 +581,7 @@ const initApp = async () => {
     async function startServer() {
         try {
             consoleEl.textContent = '';
-            appendConsole('[Jtg-craft] Starting server...\n');
+            appendConsole('[Nuvyra-Craft] Starting server...\n');
             await window.api.serverStart();
         } catch (e) {
             toast(e.message || 'Failed to start', 'error');
@@ -593,7 +593,7 @@ const initApp = async () => {
 
     $('#btn-stop').onclick = async () => {
         try {
-            appendConsole('[Jtg-craft] Stopping server...\n');
+            appendConsole('[Nuvyra-Craft] Stopping server...\n');
             await window.api.serverStop();
         } catch (e) { toast(e.message, 'error'); }
     };
@@ -611,7 +611,7 @@ const initApp = async () => {
         btnStop.disabled = true;
 
         try {
-            appendConsole('[Jtg-craft] 🔄 Restarting server safely...\n');
+            appendConsole('[Nuvyra-Craft] 🔄 Restarting server safely...\n');
             toast('Restarting server...', 'info');
 
             if (window.api && window.api.serverRestart) {
@@ -1295,7 +1295,7 @@ const initApp = async () => {
         $('#backup-label').textContent = `Backing up... ${pct}%`;
     });
 
-    let currentBackupsDir = '/storage/emulated/0/JtgCraft/server/backups';
+    let currentBackupsDir = '/storage/emulated/0/NuvyraCraft/server/backups';
 
     async function loadBackups() {
         const container = $('#backups-list-container');
@@ -2105,11 +2105,11 @@ const initApp = async () => {
                         badgePill.className = 'badge-pill up-to-date';
                         badgePill.textContent = `● Up to Date`;
                     }
-                    statusEl.textContent = result.message || `You're up to date! Jtg-Craft v${result.version} is running.`;
+                    statusEl.textContent = result.message || `You're up to date! Nuvyra-Craft v${result.version} is running.`;
                     statusEl.style.color = 'var(--green-400)';
                     if (btnDownloadUpdate) btnDownloadUpdate.classList.add('hidden');
                     if (btnRelaunchUpdate) btnRelaunchUpdate.classList.add('hidden');
-                    toast('Your Jtg-Craft is running the latest version!');
+                    toast('Your Nuvyra-Craft is running the latest version!');
                 }
             } catch (e) {
                 statusEl.textContent = 'Could not complete update check. Please verify internet connection.';
@@ -2158,7 +2158,7 @@ const initApp = async () => {
         btnRelaunchUpdate.onclick = async () => {
             btnRelaunchUpdate.disabled = true;
             btnRelaunchUpdate.innerHTML = '⏳ Saving World & Relaunching...';
-            toast('Safely saving world & relaunching Jtg-Craft...', 'info');
+            toast('Safely saving world & relaunching Nuvyra-Craft...', 'info');
 
             try {
                 if (window.api && window.api.relaunchApp) {
@@ -2195,7 +2195,7 @@ const initApp = async () => {
                 statusEl.textContent = `New update v${updateInfo.version} detected on GitHub! Click 'Download & Apply Update' to sync.`;
                 statusEl.style.color = 'var(--green-400)';
             }
-            toast(`Jtg-Craft v${updateInfo.version} is available! Open Settings to update.`);
+            toast(`Nuvyra-Craft v${updateInfo.version} is available! Open Settings to update.`);
         });
     }
 

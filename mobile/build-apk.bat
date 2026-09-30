@@ -1,7 +1,7 @@
 @echo off
-title Jtg-craft Mobile - APK Builder
+title Nuvyra-Craft Mobile - APK Builder
 echo ========================================
-echo   Jtg-craft Mobile - Building APK...
+echo   Nuvyra-Craft Mobile - Building APK...
 echo ========================================
 powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0build-apk.ps1"
 echo.

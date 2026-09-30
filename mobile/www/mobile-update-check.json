@@ -4,7 +4,7 @@
   "releaseDate": "2026-09-29",
   "channel": "mobile-production",
   "updateMode": "data-center-ota",
-  "baseUrl": "https://raw.githubusercontent.com/JishnuTheGamer/jtg-craft/main/",
+  "baseUrl": "https://raw.githubusercontent.com/NuvyraHost/Nuvyra-Craft/main/",
   "minAndroidVersion": "6.0 (Marshmallow, API 23)",
   "recommendedRam": "3GB+ (Minimum 2GB)",
   "architecture": "arm64-v8a",
@@ -28,7 +28,7 @@
         "Fixed JavaScript initialization crash restoring all Settings buttons (reinstall, delete server, Java selector, sliders)",
         "Fixed Modrinth API timeout compatibility for Android WebView so Plugin Manager browse and search work smoothly",
         "Added full Backup Management Suite with live backup file listing, creation date, size, and type indicators",
-        "Added 1-tap Restore and Delete controls for backups, plus directory path inspection (/storage/emulated/0/JtgCraft/server/backups)",
+        "Added 1-tap Restore and Delete controls for backups, plus directory path inspection (/storage/emulated/0/NuvyraCraft/server/backups)",
         "Automatic bytecode patching for Playit plugin forcing IPv4 to resolve UnsupportedAddressTypeException"
       ]
     },

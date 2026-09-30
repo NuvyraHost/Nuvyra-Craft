@@ -1,4 +1,4 @@
-package com.jtgcraft.mobile;
+package com.nuvyra.craft.mobile;
 
 import android.app.ActivityManager;
 import android.content.Context;

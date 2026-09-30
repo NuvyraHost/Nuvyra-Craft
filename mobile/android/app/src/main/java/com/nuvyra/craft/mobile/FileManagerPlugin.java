@@ -1,4 +1,4 @@
-package com.jtgcraft.mobile;
+package com.nuvyra.craft.mobile;
 
 import android.content.Context;
 import com.getcapacitor.JSArray;
@@ -122,12 +122,12 @@ public class FileManagerPlugin extends Plugin {
     public void getDefaultStoragePaths(PluginCall call) {
         JSObject ret = new JSObject();
         File extPublic = Environment.getExternalStorageDirectory(); // /storage/emulated/0
-        File jtgDefault = new File(extPublic, "JtgCraft/server");
-        File downloadDefault = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "JtgCraft/server");
+        File nuvyraDefault = new File(extPublic, "NuvyraCraft/server");
+        File downloadDefault = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "NuvyraCraft/server");
         File appInternal = new File(getContext().getFilesDir(), "servers/default");
         File appExternal = new File(getContext().getExternalFilesDir(null), "servers/default");
 
-        ret.put("phoneStorage", jtgDefault.getAbsolutePath());
+        ret.put("phoneStorage", nuvyraDefault.getAbsolutePath());
         ret.put("downloads", downloadDefault.getAbsolutePath());
         ret.put("appStorage", appInternal.getAbsolutePath());
         ret.put("appExternal", appExternal != null ? appExternal.getAbsolutePath() : appInternal.getAbsolutePath());
@@ -170,7 +170,7 @@ public class FileManagerPlugin extends Plugin {
         if (exists) {
             // Read metadata for server name and version
             File metaFile = new File(dir, ".mcmeta.json");
-            String serverName = "Jtg Server";
+            String serverName = "Nuvyra Server";
             String serverVersion = "1.20.4";
             if (metaFile.exists()) {
                 try (BufferedReader br = new BufferedReader(new FileReader(metaFile))) {
@@ -608,7 +608,7 @@ public class FileManagerPlugin extends Plugin {
                     c.setConnectTimeout(25000);
                     c.setReadTimeout(60000);
                     c.setInstanceFollowRedirects(false);
-                    c.setRequestProperty("User-Agent", "Mozilla/5.0 (Linux; Android 11; JtgCraft Mobile) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36 JtgCraft/1.0");
+                    c.setRequestProperty("User-Agent", "Mozilla/5.0 (Linux; Android 11; NuvyraCraft Mobile) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36 NuvyraCraft/1.0");
                     c.setRequestProperty("Accept", "*/*");
                     c.setRequestProperty("Accept-Encoding", "identity");
 

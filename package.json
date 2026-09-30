@@ -1,13 +1,13 @@
 {
-  "name": "jtg-craft",
+  "name": "nuvyra-craft",
   "version": "1.0.3",
-  "description": "Jtg-craft — Automated Minecraft Paper Server Manager",
+  "description": "Nuvyra-Craft — Automated Minecraft Paper Server Manager",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
     "build": "electron-builder --win --x64"
   },
-  "author": "Jishnu Tech",
+  "author": "NuvyraHost",
   "license": "MIT",
   "dependencies": {
     "archiver": "^7.0.1",
@@ -22,16 +22,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/JishnuTheGamer/jtg-craft.git"
+    "url": "https://github.com/NuvyraHost/Nuvyra-Craft.git"
   },
   "build": {
-    "appId": "com.jtgcraft.app",
-    "productName": "Jtg-craft",
+    "appId": "com.nuvyra.craft",
+    "productName": "Nuvyra-Craft",
     "publish": [
       {
         "provider": "github",
-        "owner": "JishnuTheGamer",
-        "repo": "jtg-craft"
+        "owner": "NuvyraHost",
+        "repo": "Nuvyra-Craft"
       }
     ],
     "directories": {
@@ -40,15 +40,15 @@
     "win": {
       "target": "nsis",
       "icon": "assets/icon.ico",
-      "publisherName": "Jishnu Tech",
-      "legalTrademarks": "Jishnu Tech"
+      "publisherName": "NuvyraHost",
+      "legalTrademarks": "NuvyraHost"
     },
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
-      "shortcutName": "Jtg-craft"
+      "shortcutName": "Nuvyra-Craft"
     },
     "files": [
       "main.js",

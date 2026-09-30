@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Jtg-craft</string>
-    <string name="title_activity_main">Jtg-craft</string>
-    <string name="package_name">com.jtgcraft.mobile</string>
-    <string name="custom_url_scheme">com.jtgcraft.mobile</string>
+    <string name="app_name">Nuvyra-Craft</string>
+    <string name="title_activity_main">Nuvyra-Craft</string>
+    <string name="package_name">com.nuvyra.craft.mobile</string>
+    <string name="custom_url_scheme">com.nuvyra.craft.mobile</string>
 </resources>

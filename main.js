@@ -1,5 +1,5 @@
 // ============================================================
-//  Jtg-craft — Main Process (Electron)
+//  Nuvyra-Craft — Main Process (Electron)
 //  Handles: Window, IPC, Java process, file ops, backups
 // ============================================================
 
@@ -24,8 +24,8 @@ if (os.cpus().length <= 2) {
 // ── GitHub & Update Configuration ───────────────────────────
 // Centralized config for repository and auto-updates
 const GITHUB_CONFIG = {
-    owner: 'JishnuTheGamer',
-    repo: 'jtg-craft',
+    owner: 'NuvyraHost',
+    repo: 'Nuvyra-Craft',
     branch: 'main',
     get rawManifestUrl() {
         return `https://raw.githubusercontent.com/${this.owner}/${this.repo}/${this.branch}/update-check.json`;
@@ -131,7 +131,7 @@ app.whenReady().then(() => {
 
             const resp = await axios.get(`${GITHUB_CONFIG.rawManifestUrl}?t=${Date.now()}`, { 
                 timeout: 8000,
-                headers: { 'Cache-Control': 'no-cache', 'User-Agent': 'JtgCraft/1.0' }
+                headers: { 'Cache-Control': 'no-cache', 'User-Agent': 'NuvyraCraft/1.0' }
             });
             const manifest = resp.data;
             if (manifest && (manifest.version || manifest.versionCode)) {
@@ -257,7 +257,7 @@ ipcMain.handle('check-for-updates-manual', async () => {
         // Query GitHub raw update-check.json with timestamp to bypass GitHub caching
         const resp = await axios.get(`${GITHUB_CONFIG.rawManifestUrl}?t=${Date.now()}`, { 
             timeout: 8000,
-            headers: { 'Cache-Control': 'no-cache', 'User-Agent': 'JtgCraft/1.0' }
+            headers: { 'Cache-Control': 'no-cache', 'User-Agent': 'NuvyraCraft/1.0' }
         });
         const manifest = resp.data;
 
@@ -294,7 +294,7 @@ ipcMain.handle('check-for-updates-manual', async () => {
                 updateAvailable: false,
                 version: localVer,
                 versionCode: localCode,
-                message: `You're up to date! Jtg-Craft v${localVer} (Build #${localCode}) is running.`
+                message: `You're up to date! Nuvyra-Craft v${localVer} (Build #${localCode}) is running.`
             };
         }
     } catch (e) {
@@ -309,14 +309,14 @@ ipcMain.handle('check-for-updates-manual', async () => {
     return {
         updateAvailable: false,
         version: app.getVersion(),
-        message: `You're up to date! Jtg-Craft v${app.getVersion()} is the latest version.`
+        message: `You're up to date! Nuvyra-Craft v${app.getVersion()} is the latest version.`
     };
 });
 
 ipcMain.handle('apply-github-hot-update', async () => {
     // 1. Fetch remote manifest with cache-busting
     const manifestResp = await axios.get(`${GITHUB_CONFIG.rawManifestUrl}?t=${Date.now()}`, {
-        headers: { 'Cache-Control': 'no-cache', 'User-Agent': 'JtgCraft/1.0' },
+        headers: { 'Cache-Control': 'no-cache', 'User-Agent': 'NuvyraCraft/1.0' },
         timeout: 10000
     });
     const manifest = manifestResp.data;
@@ -339,7 +339,7 @@ ipcMain.handle('apply-github-hot-update', async () => {
             const fileResp = await axios.get(fileUrl, {
                 responseType: 'arraybuffer',
                 timeout: 15000,
-                headers: { 'Cache-Control': 'no-cache', 'User-Agent': 'JtgCraft/1.0' }
+                headers: { 'Cache-Control': 'no-cache', 'User-Agent': 'NuvyraCraft/1.0' }
             });
 
             await fs.mkdir(path.dirname(targetPath), { recursive: true });
@@ -377,7 +377,7 @@ ipcMain.handle('get-update-changelog', async () => {
     try {
         const resp = await axios.get(`${GITHUB_CONFIG.rawManifestUrl}?t=${Date.now()}`, { 
             timeout: 8000,
-            headers: { 'Cache-Control': 'no-cache', 'User-Agent': 'JtgCraft/1.0' }
+            headers: { 'Cache-Control': 'no-cache', 'User-Agent': 'NuvyraCraft/1.0' }
         });
         return resp.data;
     } catch (e) {
@@ -885,7 +885,7 @@ async function downloadPaperJar(serverDir, version) {
             method: 'GET',
             responseType: 'stream',
             timeout: 300000,
-            headers: { 'User-Agent': 'JtgCraft/1.0 (https://github.com/JishnuTheGamer/jtg-craft)' }
+            headers: { 'User-Agent': 'NuvyraCraft/1.0 (https://github.com/NuvyraHost/Nuvyra-Craft)' }
         });
         const total = parseInt(resp.headers['content-length'] || '0', 10);
         let downloaded = 0;
@@ -1046,7 +1046,7 @@ async function repairMetadata(serverDir, existingMeta = null) {
     if (!foundJar) {
         try {
             if (mainWindow && !mainWindow.isDestroyed()) {
-                mainWindow.webContents.send('console-data', `[Jtg-craft] Server core JAR missing. Auto-downloading Paper ${detectedVer}...\n`);
+                mainWindow.webContents.send('console-data', `[Nuvyra-Craft] Server core JAR missing. Auto-downloading Paper ${detectedVer}...\n`);
             }
             foundJar = await downloadPaperJar(serverDir, detectedVer);
         } catch (_) {
@@ -1063,7 +1063,7 @@ async function repairMetadata(serverDir, existingMeta = null) {
     try {
         await fs.writeFile(metaPath, JSON.stringify(meta, null, 2), 'utf-8');
         if (mainWindow && !mainWindow.isDestroyed()) {
-            mainWindow.webContents.send('console-data', `[Jtg-craft] Auto-healed server metadata (.mcmeta.json) [Core: ${foundJar}, MC: ${detectedVer}, RAM: ${meta.ram}MB]\n`);
+            mainWindow.webContents.send('console-data', `[Nuvyra-Craft] Auto-healed server metadata (.mcmeta.json) [Core: ${foundJar}, MC: ${detectedVer}, RAM: ${meta.ram}MB]\n`);
         }
     } catch (_) {}
 
@@ -1209,7 +1209,7 @@ ipcMain.handle('server-start', async () => {
         if (orphanPid) {
             const isJava = await isJavaProcess(orphanPid);
             if (isJava) {
-                mainWindow.webContents.send('console-data', `[Jtg-craft] Port ${port} is occupied by an orphaned Java process (PID ${orphanPid}). Terminating orphaned process...\n`);
+                mainWindow.webContents.send('console-data', `[Nuvyra-Craft] Port ${port} is occupied by an orphaned Java process (PID ${orphanPid}). Terminating orphaned process...\n`);
                 await new Promise(r => exec(`taskkill /F /T /PID ${orphanPid}`, () => r()));
                 await new Promise(r => setTimeout(r, 600));
                 portCheck = await checkPortInUse(port);
@@ -1228,7 +1228,7 @@ ipcMain.handle('server-start', async () => {
         let portable = findPortableJava(installDir, targetVer);
         // If required Java version is missing, download it on-the-fly!
         if (!portable) {
-            mainWindow.webContents.send('console-data', `[Jtg-craft] Java ${targetVer} required for Minecraft ${meta.version} is not installed. Downloading Java ${targetVer}...\n`);
+            mainWindow.webContents.send('console-data', `[Nuvyra-Craft] Java ${targetVer} required for Minecraft ${meta.version} is not installed. Downloading Java ${targetVer}...\n`);
             await downloadJavaRuntime(installDir, targetVer, 'java-download-progress');
             portable = findPortableJava(installDir, targetVer);
         }
@@ -1265,8 +1265,8 @@ ipcMain.handle('server-start', async () => {
 
     serverProcess.on('close', code => {
         const msg = code === 0
-            ? '\n[Jtg-craft] Server stopped gracefully.\n'
-            : `\n[Jtg-craft] Server stopped unexpectedly (exit code ${code}).\n`;
+            ? '\n[Nuvyra-Craft] Server stopped gracefully.\n'
+            : `\n[Nuvyra-Craft] Server stopped unexpectedly (exit code ${code}).\n`;
         mainWindow.webContents.send('console-data', msg);
         serverProcess = null;
         serverRunning = false;
@@ -1592,8 +1592,8 @@ ipcMain.handle('players-add', async (_, listName, playerName) => {
     }
     if (listName === 'banned-players.json') {
         entry.created = new Date().toISOString();
-        entry.source = 'Jtg-craft';
-        entry.reason = 'Banned via Jtg-craft';
+        entry.source = 'Nuvyra-Craft';
+        entry.reason = 'Banned via Nuvyra-Craft';
         entry.expires = 'forever';
     }
     data.push(entry);
@@ -1645,7 +1645,7 @@ ipcMain.handle('props-save', async (_, propsObj) => {
         }
     }
 
-    let content = '#Minecraft server properties\n#Generated by Jtg-craft\n';
+    let content = '#Minecraft server properties\n#Generated by Nuvyra-Craft\n';
     for (const [k, v] of Object.entries(propsObj)) {
         content += `${k}=${v}\n`;
     }
@@ -2131,7 +2131,7 @@ async function resolvePluginDownload(projectIdOrSlug) {
     let versionList = [];
     try {
         const resp = await axios.get(filterUrl, {
-            headers: { 'User-Agent': 'JtgCraft/1.0 (https://github.com/JishnuTheGamer/jtg-craft)' },
+            headers: { 'User-Agent': 'NuvyraCraft/1.0 (https://github.com/NuvyraHost/Nuvyra-Craft)' },
             timeout: 10000
         });
         if (Array.isArray(resp.data) && resp.data.length > 0) {
@@ -2146,7 +2146,7 @@ async function resolvePluginDownload(projectIdOrSlug) {
         try {
             const rawUrl = `https://api.modrinth.com/v2/project/${projectIdOrSlug}/version`;
             const rawResp = await axios.get(rawUrl, {
-                headers: { 'User-Agent': 'JtgCraft/1.0 (https://github.com/JishnuTheGamer/jtg-craft)' },
+                headers: { 'User-Agent': 'NuvyraCraft/1.0 (https://github.com/NuvyraHost/Nuvyra-Craft)' },
                 timeout: 10000
             });
             if (Array.isArray(rawResp.data)) {
@@ -2232,7 +2232,7 @@ ipcMain.handle('plugin-search', async (_, query, category) => {
         }
 
         const resp = await axios.get(url, {
-            headers: { 'User-Agent': 'JtgCraft/1.0 (https://github.com/JishnuTheGamer/jtg-craft)' },
+            headers: { 'User-Agent': 'NuvyraCraft/1.0 (https://github.com/NuvyraHost/Nuvyra-Craft)' },
             timeout: 8000
         });
 
@@ -2316,7 +2316,7 @@ ipcMain.handle('plugin-install', async (_, opts) => {
             responseType: 'stream',
             timeout: 180000,
             maxRedirects: 5,
-            headers: { 'User-Agent': 'JtgCraft/1.0 (https://github.com/JishnuTheGamer/jtg-craft)' }
+            headers: { 'User-Agent': 'NuvyraCraft/1.0 (https://github.com/NuvyraHost/Nuvyra-Craft)' }
         });
 
         const total = parseInt(resp.headers['content-length'] || '0', 10);

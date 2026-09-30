@@ -1,14 +1,14 @@
 {
-  "name": "jtg-craft-mobile",
+  "name": "nuvyra-craft-mobile",
   "version": "1.0.0",
-  "description": "Jtg-craft Mobile — Minecraft Server Manager for Android",
+  "description": "Nuvyra-Craft Mobile — Minecraft Server Manager for Android",
   "main": "index.js",
   "scripts": {
     "build": "npx cap sync android",
     "open": "npx cap open android",
     "run": "npx cap run android"
   },
-  "author": "Jishnu Tech",
+  "author": "NuvyraHost",
   "license": "MIT",
   "dependencies": {
     "@capacitor/android": "^6.2.0",

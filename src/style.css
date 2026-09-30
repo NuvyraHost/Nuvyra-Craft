@@ -1,5 +1,5 @@
 /* ============================================================
-   Jtg-Craft — Complete Stylesheet
+   Nuvyra-Craft — Complete Stylesheet
    Premium Dark Theme · Glassmorphism · GPU-accelerated
    ============================================================ */
 
@@ -7,21 +7,21 @@
 
 /* ── CSS Variables ───────────────────────────────────────── */
 :root {
-    --bg-0: #0a0a12;          /* deepest background */
-    --bg-1: #10101a;          /* main surface       */
-    --bg-2: #16162a;          /* cards / sidebar    */
-    --bg-3: #1e1e36;          /* hover / elevated   */
-    --bg-4: #2a2a44;          /* active / input focus */
+    --bg-0: #030817;          /* deepest background */
+    --bg-1: #071225;          /* main surface       */
+    --bg-2: #0b1b35;          /* cards / sidebar    */
+    --bg-3: #10264a;          /* hover / elevated   */
+    --bg-4: #17345f;          /* active / input focus */
 
-    --green-400: #4ade80;     /* light accent */
-    --green-500: #22c55e;     /* primary accent */
-    --green-600: #16a34a;     /* hover          */
-    --green-700: #15803d;     /* active         */
-    --green-900: #0a2e1a;     /* very dark green tint */
+    --green-400: #53d8ff;     /* light accent */
+    --green-500: #00b8ff;     /* primary accent */
+    --green-600: #008fe6;     /* hover          */
+    --green-700: #006fbd;     /* active         */
+    --green-900: #001f38;     /* very dark green tint */
 
-    --accent-gradient: linear-gradient(135deg, #22c55e, #06b6d4);
-    --accent-glow: 0 0 20px rgba(34, 197, 94, 0.3);
-    --card-glow: 0 0 30px rgba(34, 197, 94, 0.08);
+    --accent-gradient: linear-gradient(135deg, #00b8ff, #06b6d4);
+    --accent-glow: 0 0 20px rgba(0, 184, 255, 0.30);
+    --card-glow: 0 0 30px rgba(0, 184, 255, 0.08);
 
     --red-500:    #ef4444;
     --yellow-500: #eab308;
@@ -182,7 +182,7 @@ input[type="range"]::-webkit-slider-thumb {
     background: var(--accent-gradient); border-radius: 50%; cursor: pointer;
     border: 2px solid var(--bg-1);
     transition: transform 150ms, box-shadow 150ms;
-    box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
+    box-shadow: 0 2px 8px rgba(0, 184, 255, 0.30);
 }
 input[type="range"]::-webkit-slider-thumb:hover {
     transform: scale(1.2);
@@ -281,7 +281,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
     position: absolute;
     width: 600px; height: 600px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(34, 197, 94, 0.08) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(0, 184, 255, 0.08) 0%, transparent 70%);
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
     animation: welcomePulse 4s ease-in-out infinite;
@@ -422,7 +422,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
 }
 .nav-item:hover { background: var(--bg-3); color: var(--text-1); }
 .nav-item.active {
-    background: rgba(34, 197, 94, 0.08);
+    background: rgba(0, 184, 255, 0.08);
     color: var(--green-400);
     font-weight: 600;
 }
@@ -781,7 +781,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
     transition: all var(--transition);
 }
 .world-card:hover {
-    border-color: rgba(34, 197, 94, 0.3);
+    border-color: rgba(0, 184, 255, 0.30);
     box-shadow: var(--card-glow);
     transform: translateY(-2px);
 }
@@ -921,7 +921,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
 .settings-card .sc-icon {
     font-size: 24px; color: var(--green-400); display: flex;
     width: 48px; height: 48px;
-    background: rgba(34, 197, 94, 0.08);
+    background: rgba(0, 184, 255, 0.08);
     border-radius: var(--radius);
     align-items: center; justify-content: center;
     flex-shrink: 0;
@@ -1401,7 +1401,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
 
 .plugin-btn-install.installed {
     background: rgba(34, 197, 94, 0.12);
-    border-color: rgba(34, 197, 94, 0.3);
+    border-color: rgba(0, 184, 255, 0.30);
     color: var(--green-400);
     cursor: default;
 }
